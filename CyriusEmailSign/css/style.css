@@ -3,6 +3,14 @@ body {
 	padding : 0px;
 	background-color : #e8e8e8;
 }
+#header {
+	font-family : 'Arial';
+	color : #800;
+	width : 516px;
+	margin : auto;
+	clear : both;
+	font-size : 0.8em;
+}
 #form {
 	position : relative;
 	margin : auto;
