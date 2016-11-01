@@ -1,1 +1,78 @@
-I have a bad feeling about this.
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/html2canvas.js"></script>
+	<script src="js/render.js"></script>
+</head>
+<body>
+<div id="header">
+	<center>
+		<h1>Gerador de Assinatura Cyrius Brasil</h1>
+		<p>Para gerar sua assinatura, preencha os dados abaixo e clique em Gerar!</p>
+		<p>Uma vez gerada, selecione todo o conteúdo do quadro branco abaixo, copie (CTRL+C) e cole no campo de assinatura do seu programa de e-mail.</p>
+	</center>
+</div>
+<div id="form">
+	<ol>
+		<li>
+			<label for="input_name">Nome: </label>
+			<input type="text" id="input_name">
+		</li>
+		<li>
+			<label for="input_job">Cargo: </label>
+			<input type="text" id="input_job">
+		</li>
+		<li>
+			<label for="input_telephone_type1">Telefone 1: </label>
+			<select id="input_telephone_type1">
+				<option value=""></option>
+				<option value="M">Celular</option>
+				<option value="T">Fixo</option>
+			</select>
+			<input type="text" id="input_telephone1">
+		</li>
+		<li>
+			<label for="input_telephone_type2">Telefone 2: </label>
+			<select id="input_telephone_type2">
+				<option value=""></option>
+				<option value="M">Celular</option>
+				<option value="T">Fixo</option>
+			</select>
+			<input type="text" id="input_telephone2">
+		</li>
+		<li>
+			<label for="input_email">Email: </label>
+			<input type="text" id="input_email">
+		</li>
+		<li>
+			<button onclick="generate()">Gerar!</button>
+		</li>
+	</ol>
+</div>
+
+<div id="wrapper">
+	<table id="sign" width="516" height="177" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+		<tr>
+			<td width="255" style="position : relative">
+				<img id="logos" style="position : absolute; top : 10px; left : 2px" width="221" height="157" alt="Logos" src="https://raw.githubusercontent.com/lucattelli/lucattelli.github.io/master/CyriusEmailSign/img/logos.png" />
+			</td>
+			<td style="position : relative">
+				<div style="border-left : solid 1px #000; padding-left : 7px; height : 177px">
+					<p id="name" style="margin-top : 0px; padding-top : 0px; margin-bottom : 10px; font-family : 'Arial'; font-size : 13px"></p>
+					<p id="job" style="margin-top : 0px; padding-top : 0px; margin-bottom : 10px; font-family : 'Arial'; font-size : 13px"></p>
+					<p id="telephone" style="margin-top : 0px; padding-top : 0px; margin-bottom : 10px; font-family : 'Arial'; font-size : 13px"></p>
+					<p id="email" style="margin-top : 0px; padding-top : 0px; margin-bottom : 15px; font-family : 'Arial'; font-size : 11px"></p>
+					<p id="sedes_bra" style="margin-top : 0px; padding-top : 0px; margin-bottom : 2px; font-family : 'Arial'; font-size : 11px; color : #006"><img id="bra" width="15" height="15" alt="BRA" src="https://lucattelli.github.io/CyriusEmailSign/img/bra.png" /> <strong>Brazil</strong> São Paulo (SP), Belo Horizonte (MG)</p>
+					<p id="sedes_ita" style="margin-top : 0px; padding-top : 0px; margin-bottom : 2px; font-family : 'Arial'; font-size : 11px; color : #006"><img width="15" height="15" title="" alt="ITA" src="https://lucattelli.github.io/CyriusEmailSign/img/ita.png" /> <strong>Italy</strong> Torino (TO)</p>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div id="reset"><button onclick="location.reload()">Voltar</button><button onclick="asimage()" style="float : right">Quero como imagem</button></div>
+
+</body>
+</html>
