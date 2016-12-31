@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Extending a Resource File in UI5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="descriptor" content="Extending a Resource File in UI5">
+    <meta name="author" content="Bruno Lucattelli">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="icon" type="image/png" href="glider-small.png">
+</head>
+<body>
+	<h1>Extending a Resource File in UI5</h1>
+	<p>When dealing with a simple extension project in Fiori, it’s common to add new fields or labels to a view. It’s a good idea to keep your own resources file in the extension project, so that you keep relying on UI5 ability to detect the language and read the corret texts to build the view.</p>
+	<p>Since its a fragment view in an extension project, all the effort to declare and load a resource model is done by the standard app. We only need to enhance the model with our own text elements.</p>
+	<p>To do so, apply these two lines in your extension controller.</p>
+	<code>
+	var oResModel = this.getView().getModel("i18n");
+	oResModel.enhance({bundleUrl:"./i18n/myresourcefile.properties"});
+	</code>
+	<p>It will automatically search for language-dependent versions of the file, like myresourcefile_en_US.properties and myresourcefile_en.properties before it reads the default myresourcefile.properties one.</p>
+	<p>Very simple. Very useful.</p>
+</body>
+</html>
