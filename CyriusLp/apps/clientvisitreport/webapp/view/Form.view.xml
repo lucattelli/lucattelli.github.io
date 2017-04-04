@@ -1,0 +1,31 @@
+<mvc:View
+	controllerName="it.cyrius.clientvisitreport.controller.Form"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified">
+	
+	<u:Shell 
+		id="myShell"
+		icon="{/logo}">
+		<u:headItems>
+			<u:ShellHeadItem
+				tooltip="Home"
+				icon="sap-icon://home"
+				visible="true"
+				press="handlePressHome" />
+		</u:headItems>
+	</u:Shell>
+
+	<Page 
+		title="{i18n>appTitle}"
+		showNavButton="true"
+		navButtonPress="onNavPress">
+		<content>
+			<core:HTML content='&lt;iframe src=&quot;https://docs.google.com/a/cyrius.it/forms/d/e/1FAIpQLSfrJm1x8CoGrtsF0faa5EZKUet72nqNy4TqYfQPnO-WnEE5cw/viewform?c=0&amp;w=1&quot; frameborder=&quot;0&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;'>
+			</core:HTML>
+		</content>
+	</Page>
+</mvc:View>

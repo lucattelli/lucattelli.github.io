@@ -1,0 +1,64 @@
+<mvc:View
+	controllerName="it.cyrius.mysignature.controller.Form"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.ui.unified">
+	
+	<u:Shell 
+		id="myShell"
+		icon="{/logo}">
+		<u:headItems>
+			<u:ShellHeadItem
+				tooltip="Home"
+				icon="sap-icon://home"
+				visible="true"
+				press="handlePressHome" />
+		</u:headItems>
+	</u:Shell>
+
+	<Page 
+		title="{i18n>appTitle}"
+		showNavButton="true"
+		navButtonPress="onNavPress">
+		<content>
+			<MessageStrip text="{i18n>signatureForm.messageStrip}" type="Warning" class="sapUiMediumMarginBeginEnd sapUiMediumMarginTopBottom"/>
+			<VBox class="sapUiSmallMargin">
+				<f:SimpleForm id="SignatureForm"
+					minWidth="1024"
+					maxContainerCols="2"
+					editable="true"
+					layout="ResponsiveGridLayout"
+					title="{i18n>signatureForm.title}"
+					labelSpanL="3"
+					labelSpanM="3"
+					emptySpanL="4"
+					emptySpanM="4"
+					columnsL="1"
+					columnsM="1"
+					class="editableForm">
+					<f:content>
+						<Label text="{i18n>signatureForm.name}" />
+						<Input id="name" value="{Name}" />
+						<Label text="{i18n>signatureForm.job}" />
+						<Input id="job" value="{Job}" />
+						<Label text="{i18n>signatureForm.telephone}" />
+						<Input id="telephone" value="{Telephone}" />
+						<Label text="{i18n>signatureForm.mobile}" />
+						<Input id="mobile" value="{Mobile}" />
+						<Label text="{i18n>signatureForm.email}" />
+						<Input id="email" value="{Email}" />
+					</f:content>
+				</f:SimpleForm>
+			</VBox>
+		</content>
+		<footer>
+            <OverflowToolbar id="otbFooter">
+                <ToolbarSpacer/>
+                <Button type="Emphasized" text="{i18n>signatureForm.generate}" press="generateSignature"/>
+            </OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>
