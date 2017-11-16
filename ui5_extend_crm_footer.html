@@ -13,9 +13,9 @@
 <body>
 	<h1>Extending Detail Footer in CRM My Opportunities</h1>
 	<p>My Opportunities App does not provide the standard SAPUI5 footer for Master-Detail applications. Instead, we get this in our detail view (S3):</p>
-	<img src="ui5_crm_s3footer.png">
+	<p><img src="ui5_crm_s3footer.png"></p>
 	<p>The footer is built using a custom logic inside S2 and S3 controllers, that adds the items to a member attribute named <strong>oHeaderFooterOptions</strong>:</p>
-	<img src="ui5_crm_s3footer_controller.png">
+	<p><img src="ui5_crm_s3footer_controller.png"></p>
 	<p>Question is: if you want to customize it (say you want to add another button to it), how to do it?</p>
 	<h2>Step 1: Create an extension project</h2>
 	<p>In my case, I'm using the SAP Fiori Cloud Trial instance, but you'll use your own landscape to create your extension project. On FCT, use the following steps below:</p>
@@ -54,6 +54,9 @@
 	<p><img src="webide_custproj10.png"></p>
 	<p><strong>Extended footer</strong></p>
 	<p><img src="webide_custproj11.png"></p>
+	<p>If you click on it, the implemented function is executed.</p>
+	<p><img src="webide_custproj12.png"></p>
+	<p>And it's done!</p>
 	<h2>Step 4: Customize Button Text</h2>
 	<p>As you have noticed, the button text comes from i18n properties file. We used one that's already available in the standard file. If you want to add your own, <a href="ui5_extend_res.html">check this link</a> where I explain how to extend the Resources file from the extension controller.</p>
 </body>
