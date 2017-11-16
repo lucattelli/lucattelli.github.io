@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Extending Detail Footer in CRM My Opportunities</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="descriptor" content="Extending Detail Footer in CRM My Opportunities">
+    <meta name="author" content="Bruno Lucattelli">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.0">
+    <link rel="icon" type="image/png" href="glider-small.png">
+</head>
+<body>
+	<h1>Extending Detail Footer in CRM My Opportunities</h1>
+	<p>My Opportunities App does not provide the standard SAPUI5 footer for Master-Detail applications. Instead, we get this in our detail view (S3):</p>
+	<img src="ui5_crm_s3footer.png">
+	<p>The footer is built using a custom logic inside S2 and S3 controllers, that adds the items to a member attribute named <strong>oHeaderFooterOptions</strong>:</p>
+	<img src="ui5_crm_s3footer_controller.png">
+	<p>Question is: if you want to customize it (say you want to add another button to it), how to do it?</p>
+	<h2>Step 1: Create an extension project</h2>
+	<p>In my case, I'm using the SAP Fiori Cloud Trial instance, but you'll use your own landscape to create your extension project. On FCT, use the following steps below:</p>
+	<p><img src="webide_custproj1.png"></p>
+	<p>You might want to select a different option here for you on-premise instance.</p>
+	<p><img src="webide_custproj2.png"></p>
+	<p><img src="webide_custproj3.png"></p>
+	Write the name of your extension project and click <strong>Next</strong>.
+	<p><img src="webide_custproj4.png"></p>
+	Check this item and click on <strong>Finish</strong>.
+	<p><img src="webide_custproj5.png"></p>
+	<p>In the Extension Pane pop-up, extend the S3 (details) controller.</p>
+	<p><img src="webide_custproj6.png"></p>
+	<p>Click on <strong>Open Extension Code</strong>.</p>
+	<p><img src="webide_custproj7.png"></p>
+	<h2>Step 2: Implement extendHeaderFooterOptions</h2>
+	<p>In your extension controller, locate the extendHeaderFooterOptions function.</p>
+	<p><img src="webide_custproj8.png"></p>
+	<p>This is the function you should be using to customize your footer content. If you evaluate the <strong>h</strong> variable in debug mode, you'll see an array of buttons here:</p>
+	<p><img src="webide_custproj9.png"></p>
+	<p>We'll create a copy of the second button (we could create an empy object as well) and apply our own settings to it. Then, we'll add the new button to this array.</p>
+	<pre>
+	extendHeaderFooterOptions: function(h) {
+		var oNewButton = Object.assign({}, h.buttonList[1]);
+		oNewButton.sI18nBtnTxt = "CREATE_OPPORTUNITY";
+		oNewButton.bDisabled = false;
+		oNewButton.sId = "createOpportunity";
+		oNewButton.onBtnPressed = function() { alert("My custom button works!"); };
+		h.buttonList.push(oNewButton);
+	}
+	</pre>
+	<p><strong>Save</strong> the extension controller.</p>
+	<h2>Step 3: Test!</h2>
+	<p>Now run it from Web IDE and check your footer.</p>
+	<p><strong>Original footer</strong></p>
+	<p><img src="webide_custproj10.png"></p>
+	<p><strong>Extended footer</strong></p>
+	<p><img src="webide_custproj11.png"></p>
+	<h2>Step 4: Customize Button Text</h2>
+	<p>As you have noticed, the button text comes from i18n properties file. We used one that's already available in the standard file. If you want to add your own, <a href="ui5_extend_res.html">check this link</a> where I explain how to extend the Resources file from the extension controller.</p>
+</body>
+</html>
