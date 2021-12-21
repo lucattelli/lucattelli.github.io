@@ -6,8 +6,36 @@
     <description>Recent content on Bruno Lucattelli</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
+    <lastBuildDate>Mon, 27 Sep 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lucattelli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+    <item>
+      <title>Learning New Programming Panguages</title>
+      <link>https://lucattelli.github.io/posts/learning_new_programming_languages/</link>
+      <pubDate>Mon, 27 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://lucattelli.github.io/posts/learning_new_programming_languages/</guid>
+      <description>&lt;p&gt;A pragmatic programmer must be learning new things, constantly. A new programming language per year is a good average according to the PragProg book. After you decided you’ll learn a new language, the important question is: which language?&lt;/p&gt;
+&lt;p&gt;Maybe you can start with a language that’s similar to the ones you already know. That’s a good start. But once you’re starting to form this new habit, &lt;a href=&#34;https://href.li/?http://www.paulgraham.com/weird.html&#34;&gt;try learning languages that are weird to you&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;More valuable than learning how to solve similar problems using different languages is actually learning about problems you’re not familiar with that these weird languages aim to solve. Expanding your knowledge about approaches and design ideas will help you write better code.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>About Hostnames</title>
+      <link>https://lucattelli.github.io/posts/about_hostnames/</link>
+      <pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://lucattelli.github.io/posts/about_hostnames/</guid>
+      <description>&lt;p&gt;Giving your machine a good hostname is important. This small gesture demonstrates how much you care about your setup. If you don’t know your hostname, you’ll have a hard time remotely connecting to it. Also, when using tmux, people will have to look at that weird name for a long time.&lt;/p&gt;
+&lt;p&gt;Have respect for your machine. &lt;a href=&#34;https://href.li/?http://seriss.com/people/erco/unixtools/hostnames.html&#34;&gt;Give it a good hostname&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
     
     
     
