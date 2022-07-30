@@ -6,9 +6,61 @@
     <description>Recent content on Bruno Lucattelli</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Mon, 27 Sep 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 Jul 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lucattelli.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+    <item>
+      <title>A good introduction to monads</title>
+      <link>https://lucattelli.github.io/posts/en/a_good_introduction_to_monads/</link>
+      <pubDate>Sat, 30 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://lucattelli.github.io/posts/en/a_good_introduction_to_monads/</guid>
+      <description>&lt;p&gt;This &lt;a href=&#34;https://www.youtube.com/watch?v=C2w45qRc3aU&#34;&gt;video&lt;/a&gt; helped me have an initial understanding of monads. I recommend if you are new to this subject.&lt;/p&gt;
+</description>
+    </item>
+    
+    
+    
+    <item>
+      <title>What to ask during the interview process</title>
+      <link>https://lucattelli.github.io/posts/en/what_to_ask_during_the_interview/</link>
+      <pubDate>Wed, 29 Dec 2021 10:55:50 -0300</pubDate>
+      
+      <guid>https://lucattelli.github.io/posts/en/what_to_ask_during_the_interview/</guid>
+      <description>&lt;ul&gt;
+&lt;li&gt;Company goal/mission?&lt;/li&gt;
+&lt;li&gt;Company stage and size?&lt;/li&gt;
+&lt;li&gt;Who&amp;rsquo;s the CEO (product, sales, engineering?)&lt;/li&gt;
+&lt;li&gt;Technology stack?&lt;/li&gt;
+&lt;li&gt;PTO policy?&lt;/li&gt;
+&lt;li&gt;Tell me more about the company culture?&lt;/li&gt;
+&lt;li&gt;How decisions are made?&lt;/li&gt;
+&lt;li&gt;How new ideas are introduced?&lt;/li&gt;
+&lt;li&gt;How you ensure the quality of your software?&lt;/li&gt;
+&lt;li&gt;How you ensure the security of your software?&lt;/li&gt;
+&lt;li&gt;How you ensure the scalability of your software?&lt;/li&gt;
+&lt;li&gt;How frequent do you ship to production?&lt;/li&gt;
+&lt;li&gt;How is software delivered?&lt;/li&gt;
+&lt;li&gt;How you deal with regressions?&lt;/li&gt;
+&lt;li&gt;How (and how often) do you collect user input and feedback?&lt;/li&gt;
+&lt;li&gt;How are teams organized?&lt;/li&gt;
+&lt;li&gt;How the services are organized?&lt;/li&gt;
+&lt;li&gt;How technical debt is managed?&lt;/li&gt;
+&lt;li&gt;What&amp;rsquo;s the core hours it&amp;rsquo;s expected to be online for synchronous collaboration with the team?&lt;/li&gt;
+&lt;li&gt;Is there a performance review process in place? How does it work?&lt;/li&gt;
+&lt;li&gt;How frequent will I get feedback on what I&amp;rsquo;m doing?&lt;/li&gt;
+&lt;li&gt;How does the company help me learn new things (for example, personal stipend, available online learning platforms, etc)&lt;/li&gt;
+&lt;li&gt;Tell me about a hard decision you had to make recently&lt;/li&gt;
+&lt;li&gt;Tell me about a highlight while working at this company&lt;/li&gt;
+&lt;li&gt;Tell me about a lowlight while working at this company&lt;/li&gt;
+&lt;li&gt;How is support done?&lt;/li&gt;
+&lt;li&gt;How much data driven is the company?&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     
     
