@@ -6,9 +6,113 @@
     <description>Recent content in Posts on Bruno Lucattelli</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Sat, 30 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 07 Jul 2023 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lucattelli.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+    <item>
+      <title>Hiding Python dictionaries in classes</title>
+      <link>https://lucattelli.github.io/posts/en/hiding_python_dictionaries_in_classes/</link>
+      <pubDate>Fri, 07 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://lucattelli.github.io/posts/en/hiding_python_dictionaries_in_classes/</guid>
+      <description>&lt;p&gt;I have been doing Python development again for the past two months as I&amp;rsquo;m working on the backends for some of Newfront&amp;rsquo;s AI services. I like to use Python&amp;rsquo;s type hinting system, and I have been using dataclasses for defining, validating and passing data around.&lt;/p&gt;
+&lt;p&gt;Frequently, our services will need to talk to external APIs to fetch data that often is provided as JSON. Whenever that&amp;rsquo;s the case, I see my beautiful, typed code, become contaminated with things like this:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import requests
+headers = {
+  &amp;#39;Accept&amp;#39;: &amp;#39;application/json&amp;#39;
+}
+ 
+r = requests.get(
+    &amp;#39;https://api.carbonintensity.org.uk/intensity&amp;#39;, 
+    params={}, 
+    headers = headers
+)
+ 
+response_data = r.json()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Assuming the response schema is something like that:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{
+  &amp;#34;data&amp;#34;:[
+    {
+    &amp;#34;from&amp;#34;: &amp;#34;2018-01-20T12:00Z&amp;#34;,
+    &amp;#34;to&amp;#34;: &amp;#34;2018-01-20T12:30Z&amp;#34;,
+    &amp;#34;intensity&amp;#34;: {
+      &amp;#34;forecast&amp;#34;: 266,
+      &amp;#34;actual&amp;#34;: 263,
+      &amp;#34;index&amp;#34;: &amp;#34;moderate&amp;#34;
+    }
+  }]
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Then, we might need to so something like this to get the forecast and actual values:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;forecast = response_data[&amp;#34;data&amp;#34;][0][&amp;#34;intensity&amp;#34;][&amp;#34;forecast&amp;#34;]
+actual = response_data[&amp;#34;data&amp;#34;][0][&amp;#34;intensity&amp;#34;][&amp;#34;actual&amp;#34;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Which is AWFUL! First, it doesn&amp;rsquo;t express the schema very well as lists and dictionaries have items referenced using the same square brackets. Also, if you return this data to your application, every place needing some piece of this data will have to run it, see how the data looks like, and then do something like that. Lastly, that introduces a lot of opportunities for exceptions. Any changes to the schema have potential to break several places in the code. And then you&amp;rsquo;ll have to fix this leaked, buggy, bad code.&lt;/p&gt;
+&lt;p&gt;Recently, I started wrapping that into a class that, using properties, can help others consume the data more safely.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;class CarbonIntensityAPIResponseItem:
+
+    def __init__(self, raw_item) -&amp;gt; None:
+        self.__item = raw_item
+
+    @property
+    def from(self) -&amp;gt; Optional[datetime]:
+        raw_from = self.__item.get(&amp;#34;from&amp;#34;)
+        if raw_from is not None:
+            return datetime.strptime(raw_from, &amp;#34;%Y-%m-%dT%H:%MZ&amp;#34;) 
+
+    @property
+    def to(self) -&amp;gt; Optional[datetime]:
+        raw_to = self.__item.get(&amp;#34;to&amp;#34;)
+        if raw_to is not None:
+            return datetime.strptime(raw_to, &amp;#34;%Y-%m-%dT%H:%MZ&amp;#34;) 
+
+    @property
+    def intensity_forecast(self) -&amp;gt; Optional[int]:
+        raw_forecast = self.__item.get(&amp;#34;intensity&amp;#34;, {}).get(&amp;#34;forecast&amp;#34;)
+        if raw_forecast is not None:
+            return raw_forecast
+
+    @property
+    def intensity_actual(self) -&amp;gt; Optional[int]:
+        raw_actual = self.__item.get(&amp;#34;intensity&amp;#34;, {}).get(&amp;#34;actual&amp;#34;)
+        if raw_actual is not None:
+            return raw_actual
+
+    @property
+    def intensity_index(self) -&amp;gt; Optional[str]:
+        raw_index = self.__item.get(&amp;#34;intensity&amp;#34;, {}).get(&amp;#34;index&amp;#34;)
+        if raw_index is not None:
+            return raw_index
+
+class CarbonIntensityAPIResponse:
+    
+    def __init__(self, raw_response) -&amp;gt; None:
+        self.__response = raw_response
+
+    def __get_data(self) -&amp;gt; list[dict]:
+        self.__response.get(&amp;#34;data&amp;#34;, []) 
+
+    @property
+    def items(self) -&amp;gt; int:
+       return len(self.__get_data())
+
+    def get_item(self, idx: int) -&amp;gt; CarbonIntensityAPIResponseItem:
+        raw_item = self.__get_data()[idx]
+        return CarbonIntensityAPIResponseItem(raw_item)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If instead of returning that JSON object you return this class, now you have:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Defined a typed interface to which other places in the code can depend on.&lt;/li&gt;
+&lt;li&gt;Concentrated all the data extraction logic in one place. If the API changes, we have only one place to change.&lt;/li&gt;
+&lt;li&gt;Much more expressive. As the return types are saying, some values are optional and code can deal with that without having to read the API docs or assume some contract, only to be proven wrong later by a bug when processing a null property.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;When compared to the previous example, here&amp;rsquo;s how someone could use the same forecast and actual values from the class replacing the dictionary response:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;item = response_data.get_item(0)
+forecast = item.intensity_forecast
+actual = item.intensity_actual
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;See? Much cleaner! Much safer!&lt;/p&gt;
+</description>
+    </item>
     
     
     
@@ -33,7 +137,7 @@
       <description>&lt;ul&gt;
 &lt;li&gt;Company goal/mission?&lt;/li&gt;
 &lt;li&gt;Company stage and size?&lt;/li&gt;
-&lt;li&gt;Who&amp;rsquo;s the CEO (product, sales, engineering?)&lt;/li&gt;
+&lt;li&gt;Who&amp;rsquo;s the CEO (what&amp;rsquo;s their background? product, sales, engineering?)&lt;/li&gt;
 &lt;li&gt;Technology stack?&lt;/li&gt;
 &lt;li&gt;PTO policy?&lt;/li&gt;
 &lt;li&gt;Tell me more about the company culture?&lt;/li&gt;

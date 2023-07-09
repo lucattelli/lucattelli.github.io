@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Software engineer from São Paulo, Brazil">
+    
+    <link rel="shortcut icon" href="https://lucattelli.github.io/favicon.ico">
+    
+    <link rel="stylesheet" href="/css/style.min.css">
+
+    <title>Hiding Python dictionaries in classes</title>
+</head>
+<body><header id="banner">
+    <h2><a href="https://lucattelli.github.io/">Bruno Lucattelli</a></h2>
+    <nav>
+        <ul>
+            <li>
+                <a href="https://lucattelli.github.io/bruno_lucattelli_resume_en.pdf" title="">Resume</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main id="content">
+<article>
+    <header id="post-header">
+        <h1>Hiding Python dictionaries in classes</h1>
+            <div>
+                <time>July 7, 2023</time>
+                </div>
+    </header><p>I have been doing Python development again for the past two months as I&rsquo;m working on the backends for some of Newfront&rsquo;s AI services. I like to use Python&rsquo;s type hinting system, and I have been using dataclasses for defining, validating and passing data around.</p>
+<p>Frequently, our services will need to talk to external APIs to fetch data that often is provided as JSON. Whenever that&rsquo;s the case, I see my beautiful, typed code, become contaminated with things like this:</p>
+<pre tabindex="0"><code>import requests
+headers = {
+  &#39;Accept&#39;: &#39;application/json&#39;
+}
+ 
+r = requests.get(
+    &#39;https://api.carbonintensity.org.uk/intensity&#39;, 
+    params={}, 
+    headers = headers
+)
+ 
+response_data = r.json()
+</code></pre><p>Assuming the response schema is something like that:</p>
+<pre tabindex="0"><code>{
+  &#34;data&#34;:[
+    {
+    &#34;from&#34;: &#34;2018-01-20T12:00Z&#34;,
+    &#34;to&#34;: &#34;2018-01-20T12:30Z&#34;,
+    &#34;intensity&#34;: {
+      &#34;forecast&#34;: 266,
+      &#34;actual&#34;: 263,
+      &#34;index&#34;: &#34;moderate&#34;
+    }
+  }]
+}
+</code></pre><p>Then, we might need to so something like this to get the forecast and actual values:</p>
+<pre tabindex="0"><code>forecast = response_data[&#34;data&#34;][0][&#34;intensity&#34;][&#34;forecast&#34;]
+actual = response_data[&#34;data&#34;][0][&#34;intensity&#34;][&#34;actual&#34;]
+</code></pre><p>Which is AWFUL! First, it doesn&rsquo;t express the schema very well as lists and dictionaries have items referenced using the same square brackets. Also, if you return this data to your application, every place needing some piece of this data will have to run it, see how the data looks like, and then do something like that. Lastly, that introduces a lot of opportunities for exceptions. Any changes to the schema have potential to break several places in the code. And then you&rsquo;ll have to fix this leaked, buggy, bad code.</p>
+<p>Recently, I started wrapping that into a class that, using properties, can help others consume the data more safely.</p>
+<pre tabindex="0"><code>class CarbonIntensityAPIResponseItem:
+
+    def __init__(self, raw_item) -&gt; None:
+        self.__item = raw_item
+
+    @property
+    def from(self) -&gt; Optional[datetime]:
+        raw_from = self.__item.get(&#34;from&#34;)
+        if raw_from is not None:
+            return datetime.strptime(raw_from, &#34;%Y-%m-%dT%H:%MZ&#34;) 
+
+    @property
+    def to(self) -&gt; Optional[datetime]:
+        raw_to = self.__item.get(&#34;to&#34;)
+        if raw_to is not None:
+            return datetime.strptime(raw_to, &#34;%Y-%m-%dT%H:%MZ&#34;) 
+
+    @property
+    def intensity_forecast(self) -&gt; Optional[int]:
+        raw_forecast = self.__item.get(&#34;intensity&#34;, {}).get(&#34;forecast&#34;)
+        if raw_forecast is not None:
+            return raw_forecast
+
+    @property
+    def intensity_actual(self) -&gt; Optional[int]:
+        raw_actual = self.__item.get(&#34;intensity&#34;, {}).get(&#34;actual&#34;)
+        if raw_actual is not None:
+            return raw_actual
+
+    @property
+    def intensity_index(self) -&gt; Optional[str]:
+        raw_index = self.__item.get(&#34;intensity&#34;, {}).get(&#34;index&#34;)
+        if raw_index is not None:
+            return raw_index
+
+class CarbonIntensityAPIResponse:
+    
+    def __init__(self, raw_response) -&gt; None:
+        self.__response = raw_response
+
+    def __get_data(self) -&gt; list[dict]:
+        self.__response.get(&#34;data&#34;, []) 
+
+    @property
+    def items(self) -&gt; int:
+       return len(self.__get_data())
+
+    def get_item(self, idx: int) -&gt; CarbonIntensityAPIResponseItem:
+        raw_item = self.__get_data()[idx]
+        return CarbonIntensityAPIResponseItem(raw_item)
+</code></pre><p>If instead of returning that JSON object you return this class, now you have:</p>
+<ul>
+<li>Defined a typed interface to which other places in the code can depend on.</li>
+<li>Concentrated all the data extraction logic in one place. If the API changes, we have only one place to change.</li>
+<li>Much more expressive. As the return types are saying, some values are optional and code can deal with that without having to read the API docs or assume some contract, only to be proven wrong later by a bug when processing a null property.</li>
+</ul>
+<p>When compared to the previous example, here&rsquo;s how someone could use the same forecast and actual values from the class replacing the dictionary response:</p>
+<pre tabindex="0"><code>item = response_data.get_item(0)
+forecast = item.intensity_forecast
+actual = item.intensity_actual
+</code></pre><p>See? Much cleaner! Much safer!</p>
+</article>
+
+        </main><footer id="footer">
+    Copyright © 2020 Bruno Lucattelli
+</footer>
+</body>
+</html>
